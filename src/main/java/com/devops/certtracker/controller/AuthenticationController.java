@@ -7,9 +7,7 @@ import com.devops.certtracker.dto.response.RefreshTokenResponse;
 import com.devops.certtracker.dto.response.SigninResponse;
 import com.devops.certtracker.dto.response.MessageResponse;
 import com.devops.certtracker.dto.response.SignoutResponse;
-import com.devops.certtracker.entity.ErrorResponse;
 import com.devops.certtracker.service.AuthenticationService;
-import com.devops.certtracker.service.PasswordResetTokenService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -20,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+
+//@CrossOrigin(origins = "http://127.0.0.1:8090", maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {

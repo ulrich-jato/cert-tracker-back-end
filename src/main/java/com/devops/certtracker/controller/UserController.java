@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "http://127.0.0.1:8090", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
