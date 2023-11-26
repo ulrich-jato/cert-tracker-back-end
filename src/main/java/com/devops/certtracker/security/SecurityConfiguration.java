@@ -2,6 +2,7 @@ package com.devops.certtracker.security;
 
 import com.devops.certtracker.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,9 @@ public class SecurityConfiguration {
     @Autowired
     private AuthenticationEntryPointJwt unauthorizedHandler;
 
+    @Value("${application.cors.domain}")
+    private String domain;
+
     @Bean
     public AuthenticationTokenFilter authenticationJwtTokenFilter(){
         return new AuthenticationTokenFilter();
@@ -59,7 +63,7 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:8090");
+        config.addAllowedOrigin(domain);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/api/**", config); // Adjust the path pattern as needed
