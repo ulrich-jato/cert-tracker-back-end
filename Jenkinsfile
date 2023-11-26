@@ -29,7 +29,7 @@ pipeline {
 
                 sh """
                     docker login -u ${containerRegistryCredentials_USR} -p ${containerRegistryCredentials_PSW} ${containerRegistryURL}
-                    docker-compose -f ${DOCKER_COMPOSE_FILE} build
+                    docker-compose up --build -d
                     docker tag ${SPRING_APP_IMAGE_NAME}:${version} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}"
                     docker push ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}
                     docker tag ${MYSQL_IMAGE_NAME}:${MYSQL_TAG} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${MYSQL_IMAGE_NAME}:${MYSQL_TAG}

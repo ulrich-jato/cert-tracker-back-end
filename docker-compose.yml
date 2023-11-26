@@ -1,5 +1,5 @@
 # Docker Compose file version
-version: "3.3"
+version: "3.7"
 
 # Service definitions
 services:
