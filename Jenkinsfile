@@ -18,9 +18,9 @@ pipeline {
                 script {
                     // Set the version number using the Jenkins BUILD_ID environment variable.
                     version = "1.0.${env.BUILD_ID}"
-                    artifactoryServer = Artifactory.server 'default'
-                    artifactoryDocker = Artifactory.docker server: artifactoryServer
-                    buildInfo = Artifactory.newBuildInfo()
+                    //artifactoryServer = Artifactory.server 'default'
+                    //artifactoryDocker = Artifactory.docker server: artifactoryServer
+                    //buildInfo = Artifactory.newBuildInfo()
                 }
             }
         }
