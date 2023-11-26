@@ -29,7 +29,6 @@ pipeline {
 
                 sh """
                     docker login -u ${containerRegistryCredentials_USR} -p ${containerRegistryCredentials_PSW} ${containerRegistryURL}
-                    docker push ${containerRegistryURL}/devops/${imageName}/${imageName}:${version}
                     docker-compose -f ./${DOCKER_COMPOSE_FILE} build
                     docker tag ${SPRING_APP_IMAGE_NAME}:${version} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}"
                     docker push ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}
