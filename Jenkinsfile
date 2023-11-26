@@ -18,8 +18,6 @@ pipeline {
                 script {
                     // Set the version number using the Jenkins BUILD_ID environment variable.
                     version = "1.0.${env.BUILD_ID}"
-                    import org.jfrog.hudson.pipeline.Artifactory
-                    import org.jfrog.hudson.pipeline.ArtifactoryServer
                     artifactoryServer = Artifactory.server 'default'
                     artifactoryDocker = Artifactory.docker server: artifactoryServer
                     buildInfo = Artifactory.newBuildInfo()
