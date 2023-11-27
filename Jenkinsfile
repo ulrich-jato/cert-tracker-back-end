@@ -42,12 +42,12 @@ pipeline {
                    echo "Current Branch: ${currentBranch}"
 
                    // Add more conditions if needed
-                   if (currentBranch == 'main') {
+                   //if (currentBranch == 'main') {
                        sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
                        sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
-                   } else {
-                       echo "Skipping deploy for branch: ${currentBranch}"
-                   }
+                   //} else {
+                   //    echo "Skipping deploy for branch: ${currentBranch}"
+                   //}
                }
            }
        }
