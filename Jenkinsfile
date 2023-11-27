@@ -9,7 +9,7 @@ pipeline {
         SPRING_APP_IMAGE_NAME = 'spring-app'
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
         version = "1.0.${env.BUILD_ID}"
-        SPRING_APP_VERSION = version
+        SPRING_APP_VERSION = ${env.version}
     }
 
     stages {
