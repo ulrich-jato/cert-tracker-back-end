@@ -6,12 +6,10 @@ services:
   # Spring application service
   spring-app:
     container_name: spring-app
+    image: spring-app
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - VERSION=${BUILD_ID}
-    image: spring-app:${VERSION}
     restart: always
     ports:
       - 8081:8081
