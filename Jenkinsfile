@@ -52,63 +52,63 @@ pipeline {
            }
        }
 
-//         post {
-//                // Command to run always, here we set the initial value for variable resultString to 'None'.
-//                always {
-//                    script {
-//                        resultString = "None"
-//                    }
-//                }
-//                success {
-//                    script {
-//                        resultString = "Success"
-//                    }
-//                }
-//                unstable {
-//                    script {
-//                        resultString = "Unstable"
-//                    }
-//                }
-//                failure {
-//                    script {
-//                        resultString = "Failure"
-//                    }
-//                }
-//                cleanup {
-//                    // Commands to run during cleanup (after all post steps) go here.
-//                    script {
-//                        // Send an email notification with build result details to recipient providers only if the pipeline does not succeed.
-//                        if (resultString != 'Success') {
-//                            emailext body: "<p>See build result details at: <a href='${env.JOB_URL}'>${env.JOB_URL}</a></p>",
-//                                    mimeType: 'text/html; charset=UTF-8',
-//                                    recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider'], [$class: 'UpstreamComitterRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-//                                    replyTo: "ulrichjato@yahoo.fr"
-//                                    subject: "${currentBuild.fullDisplayName} ${resultString}"
-//                        }
-//
-//                        // clean the workspace after the build.
-//                        cleanWs()
-//
-//                        // Retrieve the list of images with the same name.
-//                        images = sh(
-//                            returnStdout: true,
-//                            script: "docker images -q ${imageName}"
-//                        ).trim().split('\n')
-//
-//                        // Iterate through the images and remove older docker images.
-//                        if (env.BRANCH_NAME == 'master'){
-//                            for (image in images) {
-//                                img_version = sh(
-//                                    returnStdout: true,
-//                                    script: "docker image inspect --format='{{index .RepoTags 0}}' ${image} | cut -d ':' -f 2"
-//                                ).trim()
-//                                if (img_version != version) {
-//                                    sh "docker rmi -f ${image}"
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//         }
+       post {
+               // Command to run always, here we set the initial value for variable resultString to 'None'.
+               always {
+                   script {
+                       resultString = "None"
+                   }
+               }
+               success {
+                   script {
+                       resultString = "Success"
+                   }
+               }
+               unstable {
+                   script {
+                       resultString = "Unstable"
+                   }
+               }
+               failure {
+                   script {
+                       resultString = "Failure"
+                   }
+               }
+               cleanup {
+                   // Commands to run during cleanup (after all post steps) go here.
+                   script {
+                       // Send an email notification with build result details to recipient providers only if the pipeline does not succeed.
+                       if (resultString != 'Success') {
+                           emailext body: "<p>See build result details at: <a href='${env.JOB_URL}'>${env.JOB_URL}</a></p>",
+                                   mimeType: 'text/html; charset=UTF-8',
+                                   recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider'], [$class: 'UpstreamComitterRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                                   replyTo: "ulrichjato@yahoo.fr"
+                                   subject: "${currentBuild.fullDisplayName} ${resultString}"
+                       }
+
+                       // clean the workspace after the build.
+                       cleanWs()
+
+                       // Retrieve the list of images with the same name.
+                       images = sh(
+                           returnStdout: true,
+                           script: "docker images -q ${SPRING_APP_IMAGE_NAME}"
+                       ).trim().split('\n')
+
+                       // Iterate through the images and remove older docker images.
+                       if (env.BRANCH_NAME == 'null'){
+                           for (image in images) {
+                               img_version = sh(
+                                   returnStdout: true,
+                                   script: "docker image inspect --format='{{index .RepoTags 0}}' ${image} | cut -d ':' -f 2"
+                               ).trim()
+                               if (img_version != version) {
+                                   sh "docker rmi -f ${image}"
+                               }
+                           }
+                       }
+                   }
+               }
+        }
     }
 }
