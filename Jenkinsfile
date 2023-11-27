@@ -37,7 +37,7 @@ pipeline {
         }
         stage("Deploy to Dev") {
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
