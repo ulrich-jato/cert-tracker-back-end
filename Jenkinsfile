@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Set the version number using the Jenkins BUILD_ID environment variable.
-                    version = "1.0.${env.BUILD_ID}"
+                    //version = "1.0.${env.BUILD_ID}"
                     //artifactoryServer = Artifactory.server 'default'
                     //artifactoryDocker = Artifactory.docker server: artifactoryServer
                     //buildInfo = Artifactory.newBuildInfo()
@@ -29,9 +29,9 @@ pipeline {
 
                 sh """
                     docker login -u ${containerRegistryCredentials_USR} -p ${containerRegistryCredentials_PSW} ${containerRegistryURL}
-                    docker-compose build --build-arg SPRING_APP_VERSION=${version}
-                    docker tag ${SPRING_APP_IMAGE_NAME}:${version} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}
-                    docker push ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}
+                    docker-compose build --build-arg SPRING_APP_VERSION=${env.version}
+                    docker tag ${SPRING_APP_IMAGE_NAME}:${env.version} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${env.version}
+                    docker push ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${env.version}
                    """
             }
         }
