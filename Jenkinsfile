@@ -24,7 +24,7 @@ pipeline {
                 }
             }
         }
-        stage('Docker Image') {
+        stage('Build Docker Image') {
             steps {
 
                 sh """
@@ -35,12 +35,15 @@ pipeline {
                    """
             }
         }
-//         stage('Source') {
-//             steps {
-//                 git branch: 'main',
-//                     url: 'https://github.com/LinkedInLearning/essential-jenkins-2468076.git'
-//             }
-//         }
+        stage("Deploy to Dev") {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
+                sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
+            }
+        }
 //         stage('Clean') {
 //             steps {
 //                 dir("${env.WORKSPACE}/Ch04/04_02-ssh-agent"){
