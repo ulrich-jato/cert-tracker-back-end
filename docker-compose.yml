@@ -6,7 +6,7 @@ services:
   # Spring application service
   spring-app:
     container_name: spring-app
-    image: spring-app:latest
+    image: spring-app:${SPRING_APP_VERSION:-latest}  # Use the default value 'latest' if not provided
     build:
       context: .
       dockerfile: Dockerfile
