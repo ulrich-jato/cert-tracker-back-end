@@ -29,8 +29,8 @@ pipeline {
 
                 sh """
                     docker login -u ${containerRegistryCredentials_USR} -p ${containerRegistryCredentials_PSW} ${containerRegistryURL}
-                    docker-compose build --no-cache
-                    docker tag ${SPRING_APP_IMAGE_NAME} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}
+                    docker-compose build --build-arg SPRING_APP_VERSION=${version}
+                    docker tag ${SPRING_APP_IMAGE_NAME}:${version} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}
                     docker push ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${version}
                    """
             }

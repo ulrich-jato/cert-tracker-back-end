@@ -6,10 +6,12 @@ services:
   # Spring application service
   spring-app:
     container_name: spring-app
-    image: spring-app
+    image: spring-app:latest
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - SPRING_APP_VERSION=${SPRING_APP_VERSION:-latest}  # Use the default value 'latest' if not provided
     restart: always
     ports:
       - 8081:8081
