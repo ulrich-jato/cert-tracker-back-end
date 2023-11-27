@@ -35,15 +35,22 @@ pipeline {
                    """
             }
         }
-        stage("Deploy to Dev") {
-            when {
-                branch 'master'
-            }
-            steps {
-                sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
-                sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
-            }
-        }
+       stage("Deploy to Dev") {
+           steps {
+               script {
+                   def currentBranch = env.BRANCH_NAME
+                   echo "Current Branch: ${currentBranch}"
+
+                   // Add more conditions if needed
+                   if (currentBranch == 'main') {
+                       sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
+                       sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
+                   } else {
+                       echo "Skipping deploy for branch: ${currentBranch}"
+                   }
+               }
+           }
+       }
 //         stage('Clean') {
 //             steps {
 //                 dir("${env.WORKSPACE}/Ch04/04_02-ssh-agent"){
