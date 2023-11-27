@@ -79,7 +79,7 @@ pipeline {
             // Commands to run during cleanup (after all post steps) go here.
             script {
             // Send an email notification with build result details to recipient providers only if the pipeline does not succeed.
-            if (resultString != 'Success') {
+            if (resultString != 'Failure') {
                  emailext body: "<p>See build result details at: <a href='${env.JOB_URL}'>${env.JOB_URL}</a></p>",
                  mimeType: 'text/html; charset=UTF-8',
                  recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider'], [$class: 'UpstreamComitterRecipientProvider'], [$class: 'RequesterRecipientProvider']],
