@@ -97,7 +97,7 @@ pipeline {
                       ).trim().split('\n')
 
                       // Iterate through the images and remove older docker images.
-                  if (env.BRANCH_NAME == 'null'){
+                  if (env.BRANCH_NAME == null){
                       for (image in images) {
                           img_version = sh(
                               returnStdout: true,
