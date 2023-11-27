@@ -7,9 +7,9 @@ pipeline {
         ARTIFACTORY_URL = 'jato.jfrog.io'
         ARTIFACTORY_REPO = 'docker'
         SPRING_APP_IMAGE_NAME = 'spring-app'
-        MYSQL_IMAGE_NAME = 'mysql'
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-         MYSQL_TAG = '8.0'
+        version = "1.0.${env.BUILD_ID}"
+        SPRING_APP_VERSION = version
     }
 
     stages {
