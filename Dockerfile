@@ -21,7 +21,7 @@
 # Build stage
 #
 #FROM maven:3.8.3-openjdk-17 AS build
-FROM maven:latest
+FROM maven:3.9.5-amazoncorretto-8-debian
 # Set the build argument as an environment variable
 ARG SPRING_APP_VERSION
 ENV SPRING_APP_VERSION=${SPRING_APP_VERSION}
