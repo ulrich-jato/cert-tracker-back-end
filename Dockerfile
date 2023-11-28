@@ -29,7 +29,8 @@ COPY . .
 #COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 EXPOSE 8081
-ENTRYPOINT ["java","-jar","/home/app/target/cert-tracker-0.0.1-SNAPSHOT.jar"]
+#ENTRYPOINT ["java","-jar","/home/app/target/cert-tracker-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","./target/cert-tracker-0.0.1-SNAPSHOT.jar"]
 
 # Build Stage
 #FROM maven:3.8.3-openjdk-17 AS build
