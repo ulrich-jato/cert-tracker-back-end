@@ -21,7 +21,7 @@
 # Build stage
 #
 #FROM maven:3.8.3-openjdk-17 AS build
-FROM maven:3.9.5-eclipse-temurin
+FROM maven:3.8.4-eclipse-temurin-17-alpine
 # Set the build argument as an environment variable
 ARG SPRING_APP_VERSION
 ENV SPRING_APP_VERSION=${SPRING_APP_VERSION}
