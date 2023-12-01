@@ -88,7 +88,7 @@ pipeline {
                  }
 
                   // clean the workspace after the build.
-                  cleanWs()
+                  //cleanWs()
 
                   // Retrieve the list of images with the same name.
                   images = sh(
