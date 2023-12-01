@@ -34,11 +34,13 @@ services:
     restart: always
     ports:
       - 3307:3306
+    command:
+      - --init-file
+      - /docker-entrypoint-initdb.d/init-db.sh  # Use the adjusted shell script
     volumes:
-      # Mount MySQL data volume
+      - ./init-scripts/init-script.sql:/docker-entrypoint-initdb.d/init-script.sql:ro
+      - ./init-scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
       - mysql-data:/var/lib/mysql
-      - ./init-scripts:/docker-entrypoint-initdb.d
-      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro  # Mount the init script
 #    volumes:
 #      # Mount MySQL data volume and initialization scripts
 #      - ./init-scripts/init-script.sql:/docker-entrypoint-initdb.d/init-script.sql
@@ -51,7 +53,6 @@ services:
       MYSQL_USER: devops
       MYSQL_PASSWORD: devops
       MYSQL_ROOT_PASSWORD: devops
-    command: ["bash", "/docker-entrypoint-initdb.d/init-db.sh"]  # Specify the command to run the script
 # Network definition
 networks:
   spring-mysql-network:
