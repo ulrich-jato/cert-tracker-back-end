@@ -36,8 +36,8 @@ services:
       - 3307:3306
     volumes:
       # Mount MySQL data volume and initialization scripts
-      - ./mysql-data:/var/lib/mysql
-      - ./init-scripts:/docker-entrypoint-initdb.d/
+      - mysql-data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d
     networks:
       - spring-mysql-network
     environment:
