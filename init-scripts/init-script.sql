@@ -1,5 +1,5 @@
 USE certificatetracker;
-CREATE TABLE certificatetracker.roles (
+CREATE TABLE certificatetracker.roles IF NOT EXISTS (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20) NOT NULL
 );
