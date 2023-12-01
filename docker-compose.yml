@@ -34,10 +34,17 @@ services:
     restart: always
     ports:
       - 3307:3306
+    command:
+      - --init-file
+      - /docker-entrypoint-initdb.d/init-script.sh  # Use a shell script for additional commands
     volumes:
-      # Mount MySQL data volume and initialization scripts
-      - ./init-scripts/init-script.sql:/docker-entrypoint-initdb.d/init-script.sql
+      - ./init-scripts/init-script.sql:/docker-entrypoint-initdb.d/init-script.sql:ro
+      - ./init-scripts/init-script.sh:/docker-entrypoint-initdb.d/init-script.sh:ro  # Add a shell script to adjust permissions
       - mysql-data:/var/lib/mysql
+#    volumes:
+#      # Mount MySQL data volume and initialization scripts
+#      - ./init-scripts/init-script.sql:/docker-entrypoint-initdb.d/init-script.sql
+#      - mysql-data:/var/lib/mysql
     networks:
       - spring-mysql-network
     environment:
