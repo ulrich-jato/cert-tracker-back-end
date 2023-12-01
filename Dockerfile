@@ -31,7 +31,7 @@ COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 #RUN mvn -f ./pom.xml clean package
 # Ensure execute permissions for the Maven Wrapper script
-RUN mvn clean package
+#RUN mvn clean package
 EXPOSE 8081
 ENTRYPOINT ["java","-jar","/home/app/target/cert-tracker-0.0.1-SNAPSHOT.jar"]
 #ENTRYPOINT ["java","-jar","./target/cert-tracker-0.0.1-SNAPSHOT.jar"]
