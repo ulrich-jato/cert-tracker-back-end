@@ -55,7 +55,8 @@ public class EmailService {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom("cert.tracker.app@gmail.com", senderName);
+//        messageHelper.setFrom("cert.tracker.app@gmail.com", senderName);
+        messageHelper.setFrom("hc-devops-studentdemo@outlook.com", senderName);
         messageHelper.setTo(user.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
@@ -94,7 +95,8 @@ public class EmailService {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom("cert.tracker.app@gmail.com", senderName);
+//        messageHelper.setFrom("cert.tracker.app@gmail.com", senderName);
+        messageHelper.setFrom("hc-devops-studentdemo@outlook.com", senderName);
         messageHelper.setTo(user.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
@@ -130,7 +132,8 @@ public class EmailService {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom("cert.tracker.app@gmail.com", senderName);
+//        messageHelper.setFrom("cert.tracker.app@gmail.com", senderName);
+        messageHelper.setFrom("hc-devops-studentdemo@outlook.com", senderName);
         messageHelper.setTo(user.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
