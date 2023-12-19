@@ -59,7 +59,7 @@ resource "docker_container" "spring_app" {
   ]
   depends_on  = [docker_container.mysqldb]
   volumes {
-    host_path      = ".m2"
+    host_path      = "/m2"
     container_path = "/root/.m2"
   }
 }
