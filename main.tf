@@ -32,8 +32,8 @@ resource "docker_image" "mysqldb_image" {
   name = "mysql:latest"
 
   build {
-    context    = "./mysql"
-    dockerfile = "./mysql/Dockerfile"
+    context    = "/mysql"
+    dockerfile = "/mysql/Dockerfile"
   }
 }
 
