@@ -51,7 +51,7 @@ resource "docker_container" "spring_app" {
   networks_advanced {
     name = docker_network.spring_mysql_network.name
   }
-  environment = [
+  env = [
     "SPRING_APP_VERSION=${var.SPRING_APP_VERSION}",
     "spring.datasource.url=jdbc:mysql://mysqldb:3306/certificatetracker",
     "spring.datasource.username=devops",
