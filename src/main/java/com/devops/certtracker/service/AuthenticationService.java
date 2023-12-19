@@ -109,7 +109,7 @@ public class AuthenticationService {
        }
        User user = createUserFromRequest(signupRequest);
        userRepository.save(user);
-       publisher.publishEvent(new RegistrationCompleteEvent(user, applicationUrl(request)));
+       //publisher.publishEvent(new RegistrationCompleteEvent(user, applicationUrl(request)));
        return new MessageResponse("User registered successfully! Check your email to complete your registration");
    }
 

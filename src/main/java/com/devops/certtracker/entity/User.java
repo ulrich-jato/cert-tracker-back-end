@@ -33,7 +33,8 @@ public class User {
     @NotBlank
     @Size(max = 120)
     private String password;
-    private boolean isEnabled = false;
+    //private boolean isEnabled = false;
+    private boolean isEnabled = true;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",

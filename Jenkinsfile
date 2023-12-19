@@ -24,31 +24,23 @@ pipeline {
 //                 }
 //             }
 //         }
-        stage('Build Docker Image') {
-            steps {
+        stage('Setup terraform') {
+            script {
+                        // Set the environment variable for Terraform
+                        env.SPRING_APP_VERSION = SPRING_APP_VERSION
 
-                sh """
-                    docker login -u ${containerRegistryCredentials_USR} -p ${containerRegistryCredentials_PSW} ${containerRegistryURL}
-                    docker-compose build --build-arg SPRING_APP_VERSION=${env.version}
-                    docker tag ${SPRING_APP_IMAGE_NAME}:${env.version} ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${env.version}
-                    docker push ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/${SPRING_APP_IMAGE_NAME}:${env.version}
-                   """
-            }
+                        // Run Terraform commands
+                        sh """
+                            terraform init -input=false
+                            terraform plan -input=false
+                        """
+                    }
         }
-       stage("Deploy to Dev") {
+       stage("Deploy to dev") {
            steps {
-               script {
-                   def currentBranch = env.BRANCH_NAME
-                   echo "Current Branch: ${currentBranch}"
-
-                   // Add more conditions if needed
-                   //if (currentBranch == 'main') {
-                       sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
-                       sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
-                   //} else {
-                   //    echo "Skipping deploy for branch: ${currentBranch}"
-                   //}
-               }
+               sh """
+                     terraform apply -auto-approve
+               """
            }
        }
     }

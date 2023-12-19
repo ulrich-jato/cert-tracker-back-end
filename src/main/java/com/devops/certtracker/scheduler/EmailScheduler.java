@@ -16,7 +16,7 @@ public class EmailScheduler {
 
 
     // Execute every day at 8 AM in the "America/New_York" time zone
-    @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")
+    @Scheduled(cron = "0 9 10 * * ?", zone = "America/New_York")
     public void sendEmail() {
         emailService.checkCertificateExpirationAndSendEmail(days);
     }
