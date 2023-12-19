@@ -25,16 +25,19 @@ pipeline {
 //             }
 //         }
         stage('Setup terraform') {
-            script {
-                        // Set the environment variable for Terraform
-                        env.SPRING_APP_VERSION = SPRING_APP_VERSION
+            steps{
+                 script {
+                     // Set the environment variable for Terraform
+                     env.SPRING_APP_VERSION = SPRING_APP_VERSION
 
-                        // Run Terraform commands
-                        sh """
-                            terraform init -input=false
-                            terraform plan -input=false
+                     // Run Terraform commands
+                     sh """
+                          terraform init -input=false
+                          terraform plan -input=false
                         """
-                    }
+                 }
+            }
+
         }
        stage("Deploy to dev") {
            steps {
