@@ -63,7 +63,7 @@ resource "docker_container" "spring_app" {
   dynamic "networks_advanced" {
     for_each = docker_network.spring_mysql_network
     content {
-      name = networks_advanced.value.name
+      name = networks_advanced.key
     }
   }
   env = [
@@ -104,7 +104,7 @@ resource "docker_container" "mysqldb" {
   dynamic "networks_advanced" {
     for_each = docker_network.spring_mysql_network
     content {
-      name = networks_advanced.value.name
+      name = networks_advanced.key
     }
   }
   env = [
