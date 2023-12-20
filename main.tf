@@ -77,6 +77,7 @@ resource "docker_container" "spring_app" {
     host_path      = "/m2"
     container_path = "/root/.m2"
   }
+  network_mode = docker_network.spring_mysql_network.name
 }
 
 resource "docker_container" "mysqldb" {
@@ -114,6 +115,8 @@ resource "docker_container" "mysqldb" {
     "MYSQL_ROOT_PASSWORD=devops"
   ]
   depends_on  = [docker_network.spring_mysql_network, null_resource.stop_and_remove_containers]
+
+  network_mode = docker_network.spring_mysql_network.name
 }
 
 # Volume definition
