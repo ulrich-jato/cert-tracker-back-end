@@ -12,7 +12,7 @@ provider "docker" {
 }
 
 variable "SPRING_APP_VERSION" {
-  default = "latest"
+  type = string
 }
 
 # Null resource to stop and remove all containers
@@ -57,9 +57,9 @@ resource "docker_container" "spring_app" {
     internal = 8081
     external = 8081
   }
-#  networks_advanced {
-#    name = docker_network.spring_mysql_network.name
-#  }
+  networks_advanced {
+    name = "spring-mysql-network"
+  }
 #  dynamic "networks_advanced" {
 #    for_each = docker_network.spring_mysql_network
 #    content {
@@ -77,7 +77,7 @@ resource "docker_container" "spring_app" {
     host_path      = "/m2"
     container_path = "/root/.m2"
   }
-  network_mode = docker_network.spring_mysql_network.name
+#  network_mode = docker_network.spring_mysql_network.name
 }
 
 resource "docker_container" "mysqldb" {
@@ -99,9 +99,10 @@ resource "docker_container" "mysqldb" {
     host_path      = "/mysql-data"
     container_path = "/var/lib/mysql"
   }
-#  networks_advanced {
-#    name = docker_network.spring_mysql_network.name
-#  }
+
+  networks_advanced {
+    name = "spring-mysql-network"
+  }
 #  dynamic "networks_advanced" {
 #    for_each = docker_network.spring_mysql_network
 #    content {
@@ -116,7 +117,7 @@ resource "docker_container" "mysqldb" {
   ]
   depends_on  = [docker_network.spring_mysql_network, null_resource.stop_and_remove_containers]
 
-  network_mode = docker_network.spring_mysql_network.name
+#  network_mode = docker_network.spring_mysql_network.name
 }
 
 # Volume definition

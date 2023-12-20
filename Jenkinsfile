@@ -32,8 +32,8 @@ pipeline {
 
                      // Run Terraform commands
                      sh """
-                          terraform init -input=false
-                          terraform plan -input=false
+                          terraform init
+                          terraform plan -out terra.pln -var="SPRING_APP_VERSION=${version}"
                         """
                  }
             }
@@ -42,7 +42,7 @@ pipeline {
        stage("Deploy to dev") {
            steps {
                sh """
-                     terraform apply -auto-approve
+                     terraform apply -auto-approve terra.pln
                """
            }
        }
