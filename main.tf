@@ -24,8 +24,13 @@ resource "null_resource" "stop_and_remove_containers" {
     EOT
   }
 }
+# Data source to check if the network already exists
+data "docker_network" "existing_network" {
+  name = "spring-mysql-network"
+}
 
 resource "docker_network" "spring_mysql_network" {
+  count = data.docker_network.existing_network.id == null ? 1 : 0
   name = "spring-mysql-network"
 }
 
