@@ -19,28 +19,15 @@ variable "SPRING_APP_VERSION" {
 resource "null_resource" "stop_and_remove_containers" {
   provisioner "local-exec" {
     command = <<-EOT
-      docker ps -q | xargs docker stop
-      docker ps -a -q | xargs docker rm
+      docker stop spring-app mysqldb || true
+      docker rm spring-app mysqldb || true
     EOT
   }
 }
-# Data source to check if the network already exists
-#data "docker_network" "existing_network" {
-#  name = "spring-mysql-network"
-#}
 
 resource "docker_network" "spring_mysql_network" {
   name = "spring-mysql-network"
-
-  dynamic "existing_check" {
-    for_each = [0]  # This will always create one instance
-    content {
-      count = existing_check.value == 0 && docker_network.spring_mysql_network[0].id == null ? 1 : 0
-    }
-  }
 }
-
-
 
 resource "docker_image" "spring_app_image" {
   name = "spring-app:${var.SPRING_APP_VERSION}"
@@ -70,10 +57,9 @@ resource "docker_container" "spring_app" {
     internal = 8081
     external = 8081
   }
-#  networks_advanced {
-#    name = docker_network.spring_mysql_network[count.index].name
-#  }
-  network_mode = docker_network.spring_mysql_network[0].name
+  networks_advanced {
+    name = docker_network.spring_mysql_network.name
+  }
   env = [
     "SPRING_APP_VERSION=${var.SPRING_APP_VERSION}",
     "spring.datasource.url=jdbc:mysql://mysqldb:3306/certificatetracker",
@@ -106,10 +92,9 @@ resource "docker_container" "mysqldb" {
     host_path      = "/mysql-data"
     container_path = "/var/lib/mysql"
   }
-#  networks_advanced {
-#    name = docker_network.spring_mysql_network[count.index].name
-#  }
-  network_mode = docker_network.spring_mysql_network[0].name
+  networks_advanced {
+    name = docker_network.spring_mysql_network.name
+  }
   env = [
     "MYSQL_DATABASE=certificatetracker",
     "MYSQL_USER=devops",
