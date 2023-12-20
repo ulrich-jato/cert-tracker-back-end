@@ -15,6 +15,16 @@ variable "SPRING_APP_VERSION" {
   default = "latest"
 }
 
+# Null resource to stop and remove all containers
+resource "null_resource" "stop_and_remove_containers" {
+  provisioner "local-exec" {
+    command = <<-EOT
+      docker ps -q | xargs docker stop
+      docker ps -a -q | xargs docker rm
+    EOT
+  }
+}
+
 resource "docker_network" "spring_mysql_network" {
   name = "spring-mysql-network"
 }
@@ -56,7 +66,7 @@ resource "docker_container" "spring_app" {
     "spring.datasource.username=devops",
     "spring.datasource.password=devops",
   ]
-  depends_on  = [docker_container.mysqldb, docker_network.spring_mysql_network]
+  depends_on  = [docker_container.mysqldb, docker_network.spring_mysql_network,null_resource.stop_and_remove_containers]
   volumes {
     host_path      = "/m2"
     container_path = "/root/.m2"
@@ -91,7 +101,7 @@ resource "docker_container" "mysqldb" {
     "MYSQL_PASSWORD=devops",
     "MYSQL_ROOT_PASSWORD=devops"
   ]
-  depends_on  = [docker_network.spring_mysql_network]
+  depends_on  = [docker_network.spring_mysql_network, null_resource.stop_and_remove_containers]
 }
 
 # Volume definition
