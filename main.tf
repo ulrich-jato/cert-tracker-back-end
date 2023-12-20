@@ -15,9 +15,9 @@ variable "SPRING_APP_VERSION" {
   default = "latest"
 }
 
-resource "docker_network" "spring_mysql_network" {
-  name = "spring-mysql-network"
-}
+#resource "docker_network" "spring_mysql_network" {
+#  name = "spring-mysql-network"
+#}
 
 resource "docker_image" "spring_app_image" {
   name = "spring-app:${var.SPRING_APP_VERSION}"
@@ -49,7 +49,7 @@ resource "docker_container" "spring_app" {
   }
 
   networks_advanced {
-    name = docker_network.spring_mysql_network.name
+    name = spring-mysql-network #docker_network.spring_mysql_network.name
   }
   env = [
     "SPRING_APP_VERSION=${var.SPRING_APP_VERSION}",
