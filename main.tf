@@ -15,9 +15,9 @@ variable "SPRING_APP_VERSION" {
   default = "latest"
 }
 
-#resource "docker_network" "spring_mysql_network" {
-#  name = "spring-mysql-network"
-#}
+resource "docker_network" "spring_mysql_network" {
+  name = "spring-mysql-network"
+}
 
 resource "docker_image" "spring_app_image" {
   name = "spring-app:${var.SPRING_APP_VERSION}"
@@ -47,9 +47,8 @@ resource "docker_container" "spring_app" {
     internal = 8081
     external = 8081
   }
-
   networks_advanced {
-    name = spring-mysql-network #docker_network.spring_mysql_network.name
+    name = docker_network.spring_mysql_network.name
   }
   env = [
     "SPRING_APP_VERSION=${var.SPRING_APP_VERSION}",
@@ -57,7 +56,7 @@ resource "docker_container" "spring_app" {
     "spring.datasource.username=devops",
     "spring.datasource.password=devops",
   ]
-  depends_on  = [docker_container.mysqldb]
+  depends_on  = [docker_container.mysqldb, docker_network.spring_mysql_network]
   volumes {
     host_path      = "/m2"
     container_path = "/root/.m2"
@@ -84,7 +83,7 @@ resource "docker_container" "mysqldb" {
     container_path = "/var/lib/mysql"
   }
   networks_advanced {
-    name = spring-mysql-network #docker_network.spring_mysql_network.name
+    name = docker_network.spring_mysql_network.name
   }
   env = [
     "MYSQL_DATABASE=certificatetracker",
@@ -92,6 +91,7 @@ resource "docker_container" "mysqldb" {
     "MYSQL_PASSWORD=devops",
     "MYSQL_ROOT_PASSWORD=devops"
   ]
+  depends_on  = [docker_network.spring_mysql_network]
 }
 
 # Volume definition
