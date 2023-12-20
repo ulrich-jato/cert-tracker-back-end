@@ -25,14 +25,22 @@ resource "null_resource" "stop_and_remove_containers" {
   }
 }
 # Data source to check if the network already exists
-data "docker_network" "existing_network" {
-  name = "spring-mysql-network"
-}
+#data "docker_network" "existing_network" {
+#  name = "spring-mysql-network"
+#}
 
 resource "docker_network" "spring_mysql_network" {
-  count = data.docker_network.existing_network.id == null ? 1 : 0
   name = "spring-mysql-network"
+
+  dynamic "existing_check" {
+    for_each = [0]  # This will always create one instance
+    content {
+      count = existing_check.value == 0 && docker_network.spring_mysql_network[0].id == null ? 1 : 0
+    }
+  }
 }
+
+
 
 resource "docker_image" "spring_app_image" {
   name = "spring-app:${var.SPRING_APP_VERSION}"
