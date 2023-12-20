@@ -74,10 +74,10 @@ resource "docker_container" "mysqldb" {
     internal = 3306
     external = 3307
   }
-  volumes {
-    host_path      = "/init-scripts/init-script.sql"
-    container_path = "/docker-entrypoint-initdb.d/init-script.sql"
-  }
+#  volumes {
+#    host_path      = "/init-scripts/init-script.sql"
+#    container_path = "/docker-entrypoint-initdb.d/init-script.sql"
+#  }
 
   volumes {
     host_path      = "/mysql-data"
