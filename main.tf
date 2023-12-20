@@ -60,12 +60,12 @@ resource "docker_container" "spring_app" {
 #  networks_advanced {
 #    name = docker_network.spring_mysql_network.name
 #  }
-  dynamic "networks_advanced" {
-    for_each = docker_network.spring_mysql_network
-    content {
-      name = networks_advanced.key
-    }
-  }
+#  dynamic "networks_advanced" {
+#    for_each = docker_network.spring_mysql_network
+#    content {
+#      name = networks_advanced.key
+#    }
+#  }
   env = [
     "SPRING_APP_VERSION=${var.SPRING_APP_VERSION}",
     "spring.datasource.url=jdbc:mysql://mysqldb:3306/certificatetracker",
@@ -102,12 +102,12 @@ resource "docker_container" "mysqldb" {
 #  networks_advanced {
 #    name = docker_network.spring_mysql_network.name
 #  }
-  dynamic "networks_advanced" {
-    for_each = docker_network.spring_mysql_network
-    content {
-      name = networks_advanced.key
-    }
-  }
+#  dynamic "networks_advanced" {
+#    for_each = docker_network.spring_mysql_network
+#    content {
+#      name = networks_advanced.key
+#    }
+#  }
   env = [
     "MYSQL_DATABASE=certificatetracker",
     "MYSQL_USER=devops",
