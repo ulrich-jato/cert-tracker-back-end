@@ -65,7 +65,7 @@ resource "docker_container" "spring_app" {
 }
 
 resource "docker_container" "mysqldb" {
-  name        = "spring-app"
+  name        = "mysqldb"
   image       = docker_image.mysqldb_image.name
   restart = "on-failure"
   max_retry_count = 2
