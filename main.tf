@@ -62,9 +62,10 @@ resource "docker_container" "spring_app" {
     internal = 8081
     external = 8081
   }
-  networks_advanced {
-    name = docker_network.spring_mysql_network[count.index].name
-  }
+#  networks_advanced {
+#    name = docker_network.spring_mysql_network[count.index].name
+#  }
+  network_mode = docker_network.spring_mysql_network[0].name
   env = [
     "SPRING_APP_VERSION=${var.SPRING_APP_VERSION}",
     "spring.datasource.url=jdbc:mysql://mysqldb:3306/certificatetracker",
@@ -97,9 +98,10 @@ resource "docker_container" "mysqldb" {
     host_path      = "/mysql-data"
     container_path = "/var/lib/mysql"
   }
-  networks_advanced {
-    name = docker_network.spring_mysql_network[count.index].name
-  }
+#  networks_advanced {
+#    name = docker_network.spring_mysql_network[count.index].name
+#  }
+  network_mode = docker_network.spring_mysql_network[0].name
   env = [
     "MYSQL_DATABASE=certificatetracker",
     "MYSQL_USER=devops",
