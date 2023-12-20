@@ -84,7 +84,7 @@ resource "docker_container" "mysqldb" {
     container_path = "/var/lib/mysql"
   }
   networks_advanced {
-    name = docker_network.spring_mysql_network.name
+    name = spring-mysql-network #docker_network.spring_mysql_network.name
   }
   env = [
     "MYSQL_DATABASE=certificatetracker",
