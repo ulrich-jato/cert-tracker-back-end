@@ -39,8 +39,9 @@ resource "null_resource" "create_docker_network" {
   }
 
   provisioner "local-exec" {
-    command = "docker network create spring-mysql-network || true"
-    when    = data.external.docker_network_exists.result == "false" ? "create" : "never"
+#    command = "docker network create spring-mysql-network || true"
+#    when    = data.external.docker_network_exists.result == "false" ? "create" : "never"
+    command = data.external.docker_network_exists.result == "false" ? "docker network create spring_mysql_network" : "echo 'Network already exists'"
   }
 }
 
