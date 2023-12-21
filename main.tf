@@ -26,7 +26,14 @@ resource "null_resource" "stop_and_remove_containers" {
 }
 
 data "external" "docker_network_exists" {
-  program = ["bash", "-c", "docker network inspect spring-mysql-network >/dev/null 2>&1 && echo '{\"result\":\"true\"}' || echo '{\"result\":\"false\"}'"]
+  program = ["bash", "-c", <<-EOT
+    if docker network inspect spring-mysql-network >/dev/null 2>&1; then
+      echo '{"result":"true"}'
+    else
+      echo '{"result":"false"}'
+    fi
+  EOT
+  ]
 }
 
 
