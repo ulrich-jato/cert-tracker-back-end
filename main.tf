@@ -38,17 +38,27 @@ data "external" "docker_network_exists" {
 
 
 
+#resource "null_resource" "create_docker_network" {
+#  triggers = {
+#    network_exists = data.external.docker_network_exists.result
+#  }
+#
+#  provisioner "local-exec" {
+##    command = "docker network create spring-mysql-network || true"
+##    when    = data.external.docker_network_exists.result == "false" ? "create" : "never"
+#    command = data.external.docker_network_exists.result == "false" ? "docker network create spring_mysql_network" : "echo 'Network already exists'"
+#  }
+#}
 resource "null_resource" "create_docker_network" {
   triggers = {
-    network_exists = data.external.docker_network_exists.result
+    network_exists = jsonencode(data.external.docker_network_exists.result)
   }
 
   provisioner "local-exec" {
-#    command = "docker network create spring-mysql-network || true"
-#    when    = data.external.docker_network_exists.result == "false" ? "create" : "never"
-    command = data.external.docker_network_exists.result == "false" ? "docker network create spring_mysql_network" : "echo 'Network already exists'"
+    command = data.external.docker_network_exists.result["result"] == "false" ? "docker network create spring-mysql-network" : "echo 'Network already exists'"
   }
 }
+
 
 resource "docker_image" "spring_app_image" {
   name = "spring-app:${var.SPRING_APP_VERSION}"
