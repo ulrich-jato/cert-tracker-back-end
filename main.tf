@@ -40,7 +40,7 @@ data "external" "docker_network_exists" {
 
 resource "null_resource" "create_docker_network" {
   triggers = {
-    network_exists = data.external.docker_network_exists.program
+    network_exists = data.external.docker_network_exists.result
   }
 
   provisioner "local-exec" {
