@@ -29,18 +29,14 @@ resource "null_resource" "stop_and_remove_containers" {
 #  name = "spring-mysql-network"
 #}
 
-#data "external" "docker_network_exists" {
-#  program = ["bash", "-c", "docker network inspect spring-mysql-network >/dev/null 2>&1 || echo 'false'"]
-#}
-
 data "external" "docker_network_exists" {
-  program = ["bash", "-c", "docker network inspect spring-mysql-network >/dev/null 2>&1 || echo '{\"result\":\"false\"}'"]
+  program = ["bash", "-c", "docker network inspect spring-mysql-network >/dev/null 2>&1 || echo 'false'"]
 }
 
 
 resource "null_resource" "create_docker_network" {
   triggers = {
-    network_exists = data.external.docker_network_exists.result
+    network_exists = data.external.docker_network_exists.program
   }
 
   provisioner "local-exec" {
