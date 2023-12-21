@@ -25,8 +25,23 @@ resource "null_resource" "stop_and_remove_containers" {
   }
 }
 
-resource "docker_network" "spring_mysql_network" {
-  name = "spring-mysql-network"
+#resource "docker_network" "spring_mysql_network" {
+#  name = "spring-mysql-network"
+#}
+
+data "external" "docker_network_exists" {
+  program = ["bash", "-c", "docker network inspect spring-mysql-network >/dev/null 2>&1 || echo 'false'"]
+}
+
+resource "null_resource" "create_docker_network" {
+  triggers = {
+    network_exists = data.external.docker_network_exists.result
+  }
+
+  provisioner "local-exec" {
+    command = "docker network create spring-mysql-network || true"
+    when    = data.external.docker_network_exists.result == "false" ? "create" : "never"
+  }
 }
 
 resource "docker_image" "spring_app_image" {
@@ -57,9 +72,10 @@ resource "docker_container" "spring_app" {
     internal = 8081
     external = 8081
   }
-  networks_advanced {
-    name = "spring-mysql-network"
-  }
+#  networks_advanced {
+#    name = docker_network.spring_mysql_network.name
+#  }
+  network_mode = "spring-mysql-network"
 #  dynamic "networks_advanced" {
 #    for_each = docker_network.spring_mysql_network
 #    content {
@@ -72,7 +88,7 @@ resource "docker_container" "spring_app" {
     "spring.datasource.username=devops",
     "spring.datasource.password=devops",
   ]
-  depends_on  = [docker_container.mysqldb, docker_network.spring_mysql_network,null_resource.stop_and_remove_containers]
+  depends_on  = [docker_container.mysqldb, null_resource.create_docker_network,null_resource.stop_and_remove_containers]
   volumes {
     host_path      = "/m2"
     container_path = "/root/.m2"
@@ -100,9 +116,10 @@ resource "docker_container" "mysqldb" {
     container_path = "/var/lib/mysql"
   }
 
-  networks_advanced {
-    name = "spring-mysql-network"
-  }
+#  networks_advanced {
+#    name = "spring-mysql-network"
+#  }
+  network_mode = "spring-mysql-network"
 #  dynamic "networks_advanced" {
 #    for_each = docker_network.spring_mysql_network
 #    content {
@@ -115,7 +132,7 @@ resource "docker_container" "mysqldb" {
     "MYSQL_PASSWORD=devops",
     "MYSQL_ROOT_PASSWORD=devops"
   ]
-  depends_on  = [docker_network.spring_mysql_network, null_resource.stop_and_remove_containers]
+  depends_on  = [null_resource.create_docker_network, null_resource.stop_and_remove_containers]
 
 #  network_mode = docker_network.spring_mysql_network.name
 }
