@@ -44,7 +44,7 @@ resource "null_resource" "create_docker_network" {
 
   provisioner "local-exec" {
     command = <<EOT
-    if [ "${data.external.docker_network_exists.program["result"]}" == "false" ]; then
+    if [ "false" == "false" ]; then
       docker network create spring-mysql-network
     else
       echo 'Network already exists'
