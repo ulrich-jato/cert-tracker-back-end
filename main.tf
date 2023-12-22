@@ -44,7 +44,7 @@ resource "null_resource" "create_docker_network" {
 
   provisioner "local-exec" {
     command = <<EOT
-    if [ "${data.external.docker_network_exists.result["result"]}" == "false" ]; then
+    if [ "${data.external.docker_network_exists.program["result"]}" == "false" ]; then
       docker network create spring-mysql-network
     else
       echo 'Network already exists'
@@ -99,12 +99,13 @@ resource "docker_container" "spring_app" {
     "spring.datasource.username=devops",
     "spring.datasource.password=devops",
   ]
-  depends_on  = [docker_container.mysqldb, null_resource.create_docker_network,null_resource.stop_and_remove_containers]
+
   volumes {
     host_path      = "/m2"
     container_path = "/root/.m2"
   }
 #  network_mode = docker_network.spring_mysql_network.name
+  depends_on  = [docker_container.mysqldb, null_resource.create_docker_network,null_resource.stop_and_remove_containers]
 }
 
 resource "docker_container" "mysqldb" {
