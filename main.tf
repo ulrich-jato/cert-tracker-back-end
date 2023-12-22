@@ -25,6 +25,34 @@ resource "null_resource" "stop_and_remove_containers" {
   }
 }
 
+#data "external" "docker_network_exists" {
+#  program = ["bash", "-c", <<-EOT
+#    if docker network inspect spring-mysql-network >/dev/null 2>&1; then
+#      echo '{"result":"true"}'
+#    else
+#      echo '{"result":"false"}'
+#    fi
+#  EOT
+#  ]
+#}
+#
+#
+#resource "null_resource" "create_docker_network" {
+#  triggers = {
+#    network_exists = jsonencode(data.external.docker_network_exists.result)
+#  }
+#
+#  provisioner "local-exec" {
+#    command = <<EOT
+#    if [ "false" == "false" ]; then
+#      docker network create spring-mysql-network
+#    else
+#      echo 'Network already exists'
+#    fi
+#  EOT
+#  }
+#  depends_on = [data.external.docker_network_exists]
+#}
 data "external" "docker_network_exists" {
   program = ["bash", "-c", <<-EOT
     if docker network inspect spring-mysql-network >/dev/null 2>&1; then
@@ -36,21 +64,17 @@ data "external" "docker_network_exists" {
   ]
 }
 
-
 resource "null_resource" "create_docker_network" {
-  triggers = {
-    network_exists = jsonencode(data.external.docker_network_exists.result)
-  }
-
   provisioner "local-exec" {
     command = <<EOT
-    if [ "false" == "false" ]; then
+    if [ "$(jsondecode(data.external.docker_network_exists.result)["result"])" == "false"  ]; then
       docker network create spring-mysql-network
     else
       echo 'Network already exists'
     fi
   EOT
   }
+
   depends_on = [data.external.docker_network_exists]
 }
 
