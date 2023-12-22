@@ -51,6 +51,7 @@ resource "null_resource" "create_docker_network" {
     fi
   EOT
   }
+  depends_on = [data.external.docker_network_exists]
 }
 
 
@@ -142,7 +143,7 @@ resource "docker_container" "mysqldb" {
     "MYSQL_PASSWORD=devops",
     "MYSQL_ROOT_PASSWORD=devops"
   ]
-  depends_on  = [docker_volume.mysql_data, null_resource.create_docker_network, null_resource.stop_and_remove_containers]
+  depends_on  = [null_resource.create_docker_network, docker_volume.mysql_data, null_resource.stop_and_remove_containers]
 
 #  network_mode = docker_network.spring_mysql_network.name
 }
