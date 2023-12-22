@@ -94,7 +94,7 @@ resource "docker_container" "spring_app" {
 #  }
   env = [
     "SPRING_APP_VERSION=${var.SPRING_APP_VERSION}",
-    "spring.datasource.url=jdbc:mysql://mysqldb:3306/certificatetracker",
+    "spring.datasource.url=jdbc:mysql://mysqld:3306/certificatetracker",
     "spring.datasource.username=devops",
     "spring.datasource.password=devops",
   ]
