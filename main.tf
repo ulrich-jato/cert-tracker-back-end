@@ -66,7 +66,7 @@ data "external" "docker_network_exists" {
 
 resource "null_resource" "create_docker_network" {
   provisioner "local-exec" {
-    command = <<EOT
+    command = <<-EOT
     if [ "$(jsondecode(data.external.docker_network_exists.result)["result"])" == "false"  ]; then
       docker network create spring-mysql-network
     else
