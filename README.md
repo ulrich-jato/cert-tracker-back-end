@@ -18,7 +18,7 @@ This project is a Spring Boot application designed to track TLS/SSL certificates
 - **Spring Security**
 - **Hibernate**
 - **JPA**
-- **PostgreSQL**
+- **MySQL**
 - **Maven**
 - **JWT (JSON Web Tokens)**
 - **Spring Mail**
